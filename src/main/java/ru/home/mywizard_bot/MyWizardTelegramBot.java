@@ -6,7 +6,7 @@ import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.home.mywizard_bot.botapi.TelegramFacade;
 
 
 public class MyWizardTelegramBot extends TelegramWebhookBot {
@@ -14,9 +14,12 @@ public class MyWizardTelegramBot extends TelegramWebhookBot {
     private String botUserName;
     private String botToken;
 
+    private TelegramFacade telegramFacade;
 
-    public MyWizardTelegramBot(DefaultBotOptions botOptions) {
+
+    public MyWizardTelegramBot(DefaultBotOptions botOptions, TelegramFacade telegramFacade) {
         super(botOptions);
+        this.telegramFacade = telegramFacade;
     }
 
 
@@ -37,18 +40,9 @@ public class MyWizardTelegramBot extends TelegramWebhookBot {
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        if (update.getMessage() != null && update.getMessage().hasText()) {
-            long chat_id = update.getMessage().getChatId();
+        SendMessage replyMessageToUser = telegramFacade.handleUpdate(update);
 
-
-            try {
-                execute(new SendMessage(chat_id, "Hi " + update.getMessage().getText()));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
+        return replyMessageToUser;
     }
 
 

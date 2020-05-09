@@ -3,11 +3,14 @@ package ru.home.mywizard_bot.appconfig;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.ApiContext;
 import ru.home.mywizard_bot.MyWizardTelegramBot;
+import ru.home.mywizard_bot.botapi.TelegramFacade;
 
 
 @Setter
@@ -24,7 +27,7 @@ public class BotConfig {
     private int proxyPort;
 
     @Bean
-    public MyWizardTelegramBot MySuperTelegramBot() {
+    public MyWizardTelegramBot myWizardTelegramBot(TelegramFacade telegramFacade) {
         DefaultBotOptions options = ApiContext
                 .getInstance(DefaultBotOptions.class);
 
@@ -32,11 +35,21 @@ public class BotConfig {
         options.setProxyPort(proxyPort);
         options.setProxyType(proxyType);
 
-        MyWizardTelegramBot mySuperTelegramBot = new MyWizardTelegramBot(options);
-        mySuperTelegramBot.setBotUserName(botUserName);
-        mySuperTelegramBot.setBotToken(botToken);
-        mySuperTelegramBot.setWebHookPath(webHookPath);
+        MyWizardTelegramBot myWizardTelegramBot = new MyWizardTelegramBot(options, telegramFacade);
+        myWizardTelegramBot.setBotUserName(botUserName);
+        myWizardTelegramBot.setBotToken(botToken);
+        myWizardTelegramBot.setWebHookPath(webHookPath);
 
-        return mySuperTelegramBot;
+        return myWizardTelegramBot;
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource
+                = new ReloadableResourceBundleMessageSource();
+
+        messageSource.setBasename("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
     }
 }
