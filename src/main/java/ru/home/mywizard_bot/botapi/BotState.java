@@ -14,6 +14,7 @@ public enum BotState {
     ASK_SONG,
     FILLING_PROFILE,
     PROFILE_FILLED,
+    SHOW_USER_PROFILE,
     SHOW_MAIN_MENU,
     SHOW_HELP_MENU;
 }

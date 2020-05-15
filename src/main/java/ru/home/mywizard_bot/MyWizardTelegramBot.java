@@ -4,7 +4,6 @@ package ru.home.mywizard_bot;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.home.mywizard_bot.botapi.TelegramFacade;
 
@@ -40,11 +39,10 @@ public class MyWizardTelegramBot extends TelegramWebhookBot {
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        SendMessage replyMessageToUser = telegramFacade.handleUpdate(update);
+        final BotApiMethod<?> replyMessageToUser = telegramFacade.handleUpdate(update);
 
         return replyMessageToUser;
     }
-
 
     public void setWebHookPath(String webHookPath) {
         this.webHookPath = webHookPath;
