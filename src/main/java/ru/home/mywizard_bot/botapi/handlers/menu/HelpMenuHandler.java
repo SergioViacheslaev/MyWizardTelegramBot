@@ -7,6 +7,7 @@ import ru.home.mywizard_bot.botapi.BotState;
 import ru.home.mywizard_bot.botapi.InputMessageHandler;
 import ru.home.mywizard_bot.service.MainMenuService;
 import ru.home.mywizard_bot.service.ReplyMessagesService;
+import ru.home.mywizard_bot.utils.Emojis;
 
 
 @Component
@@ -22,7 +23,7 @@ public class HelpMenuHandler implements InputMessageHandler {
     @Override
     public SendMessage handle(Message message) {
         return mainMenuService.getMainMenuMessage(message.getChatId(),
-                messagesService.getReplyText("reply.showHelpMenu"));
+                messagesService.getReplyText("reply.showHelpMenu", Emojis.MAGE));
     }
 
     @Override

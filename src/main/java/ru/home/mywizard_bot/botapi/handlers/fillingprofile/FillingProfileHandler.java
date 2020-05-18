@@ -9,7 +9,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import ru.home.mywizard_bot.botapi.BotState;
 import ru.home.mywizard_bot.botapi.InputMessageHandler;
 import ru.home.mywizard_bot.cache.UserDataCache;
+import ru.home.mywizard_bot.model.UserProfileData;
+import ru.home.mywizard_bot.service.PredictionService;
 import ru.home.mywizard_bot.service.ReplyMessagesService;
+import ru.home.mywizard_bot.utils.Emojis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +27,13 @@ import java.util.List;
 public class FillingProfileHandler implements InputMessageHandler {
     private UserDataCache userDataCache;
     private ReplyMessagesService messagesService;
+    private PredictionService predictionService;
 
-    public FillingProfileHandler(UserDataCache userDataCache,
-                                 ReplyMessagesService messagesService) {
+    public FillingProfileHandler(UserDataCache userDataCache, ReplyMessagesService messagesService,
+                                 PredictionService predictionService) {
         this.userDataCache = userDataCache;
         this.messagesService = messagesService;
+        this.predictionService = predictionService;
     }
 
     @Override
@@ -98,7 +103,13 @@ public class FillingProfileHandler implements InputMessageHandler {
         if (botState.equals(BotState.PROFILE_FILLED)) {
             profileData.setSong(usersAnswer);
             userDataCache.setUsersCurrentBotState(userId, BotState.SHOW_MAIN_MENU);
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.profileFilled");
+
+            String profileFilledMessage = messagesService.getReplyText("reply.profileFilled",
+                    profileData.getName(), Emojis.SPARKLES);
+            String predictionMessage = predictionService.getPrediction();
+
+            replyToUser = new SendMessage(chatId, String.format("%s%n%n%s %s", profileFilledMessage, Emojis.SCROLL, predictionMessage));
+            replyToUser.setParseMode("HTML");
         }
 
         userDataCache.saveUserProfileData(userId, profileData);

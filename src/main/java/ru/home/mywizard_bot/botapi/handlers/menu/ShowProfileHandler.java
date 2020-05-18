@@ -5,8 +5,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import ru.home.mywizard_bot.botapi.BotState;
 import ru.home.mywizard_bot.botapi.InputMessageHandler;
-import ru.home.mywizard_bot.botapi.handlers.fillingprofile.UserProfileData;
 import ru.home.mywizard_bot.cache.UserDataCache;
+import ru.home.mywizard_bot.model.UserProfileData;
 
 /**
  * @author Sergei Viacheslaev
@@ -25,9 +25,8 @@ public class ShowProfileHandler implements InputMessageHandler {
         final UserProfileData profileData = userDataCache.getUserProfileData(userId);
 
         userDataCache.setUsersCurrentBotState(userId, BotState.SHOW_MAIN_MENU);
-        return new SendMessage(message.getChatId(), String.format("%s%n -------------------%nИмя: %s%nВозраст: %d%nПол: %s%nЛюбимая цифра: %d%n" +
-                        "Цвет: %s%nФильм: %s%nПесня: %s%n", "Данные по вашей анкете", profileData.getName(), profileData.getAge(), profileData.getGender(), profileData.getNumber(),
-                profileData.getColor(), profileData.getMovie(), profileData.getSong()));
+        return new SendMessage(message.getChatId(),
+                String.format("%s%n-------------------%n%s", "Данные по вашей анкете:", profileData.toString()));
     }
 
     @Override

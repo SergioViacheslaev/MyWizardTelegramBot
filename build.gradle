@@ -24,5 +24,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     compile group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '4.4.0.2'
+    compile group: 'com.vdurmont', name: 'emoji-java', version: '5.1.1'
 }
 

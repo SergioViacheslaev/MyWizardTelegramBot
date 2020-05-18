@@ -1,7 +1,7 @@
 package ru.home.mywizard_bot.cache;
 
 import ru.home.mywizard_bot.botapi.BotState;
-import ru.home.mywizard_bot.botapi.handlers.fillingprofile.UserProfileData;
+import ru.home.mywizard_bot.model.UserProfileData;
 
 
 public interface DataCache {

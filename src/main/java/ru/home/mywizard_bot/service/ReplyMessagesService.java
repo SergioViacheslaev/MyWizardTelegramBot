@@ -28,4 +28,8 @@ public class ReplyMessagesService {
         return localeMessageService.getMessage(replyText);
     }
 
+    public String getReplyText(String replyText, Object... args) {
+        return localeMessageService.getMessage(replyText, args);
+    }
+
 }
