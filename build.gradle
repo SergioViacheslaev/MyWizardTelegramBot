@@ -20,10 +20,16 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.2.1.RELEASE'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     compile group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '4.4.0.2'
     compile group: 'com.vdurmont', name: 'emoji-java', version: '5.1.1'
+
+    //region DB
+    compile group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.2.0'
+    //endregion
 }
 

@@ -12,6 +12,7 @@ import ru.home.mywizard_bot.cache.UserDataCache;
 import ru.home.mywizard_bot.model.UserProfileData;
 import ru.home.mywizard_bot.service.PredictionService;
 import ru.home.mywizard_bot.service.ReplyMessagesService;
+import ru.home.mywizard_bot.service.UsersProfileDataService;
 import ru.home.mywizard_bot.utils.Emojis;
 
 import java.util.ArrayList;
@@ -28,12 +29,14 @@ public class FillingProfileHandler implements InputMessageHandler {
     private UserDataCache userDataCache;
     private ReplyMessagesService messagesService;
     private PredictionService predictionService;
+    private UsersProfileDataService profileDataService;
 
     public FillingProfileHandler(UserDataCache userDataCache, ReplyMessagesService messagesService,
-                                 PredictionService predictionService) {
+                                 PredictionService predictionService, UsersProfileDataService profileDataService) {
         this.userDataCache = userDataCache;
         this.messagesService = messagesService;
         this.predictionService = predictionService;
+        this.profileDataService = profileDataService;
     }
 
     @Override
@@ -102,6 +105,10 @@ public class FillingProfileHandler implements InputMessageHandler {
 
         if (botState.equals(BotState.PROFILE_FILLED)) {
             profileData.setSong(usersAnswer);
+            profileData.setChatId(chatId);
+
+            profileDataService.saveUserProfileData(profileData);
+
             userDataCache.setUsersCurrentBotState(userId, BotState.SHOW_MAIN_MENU);
 
             String profileFilledMessage = messagesService.getReplyText("reply.profileFilled",
